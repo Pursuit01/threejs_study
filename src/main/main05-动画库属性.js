@@ -57,12 +57,11 @@ document.body.appendChild(renderer.domElement);
 // 9. 创建轨道控制器
 // 传入控制器需要控制的相机和物体
 const controls = new OrbitControls(camera, renderer.domElement);
-// 设置阻尼
-controls.enableDamping = true;
+
 const clock = new THREE.Clock();
 
 // 使用gsap动画库实现物体的移动
-gsap.to(cube.position, {
+const animate1 = gsap.to(cube.position, {
   x: 5,
   y: 2,
   duration: 3,
@@ -84,22 +83,21 @@ gsap.to(cube.rotation, {
   },
 });
 
+window.addEventListener("dblclick", () => {
+  if (animate1.isActive()) {
+    animate1.pause();
+  } else {
+    animate1.resume();
+  }
+  console.log(animate1);
+});
+
 const render = () => {
   // cube.rotation.z += Math.PI / 180; // 物体旋转
-  controls.update();
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };
 render();
 
-// 监听窗口大小的变化
-window.addEventListener("resize", () => {
-  // 更新摄像头
-  camera.aspect = window.innerWidth / window.innerHeight;
-  // 更新摄像机的投影矩阵
-  camera.updateProjectionMatrix();
-  // 更新渲染器
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  // 设置渲染器的像素比
-  renderer.setPixelRatio(window.devicePixelRatio);
-});
+//
+// controls.update();
