@@ -61,36 +61,8 @@ const controls = new OrbitControls(camera, renderer.domElement);
 const clock = new THREE.Clock();
 
 // 使用gsap动画库实现物体的移动
-const animate1 = gsap.to(cube.position, {
-  x: 5,
-  y: 2,
-  duration: 3,
-  repeat: -1,
-  yoyo: true,
-});
-gsap.to(cube.rotation, {
-  x: Math.PI * 2,
-  ease: "power1.inOut", // 动效
-  duration: 3, // 时长
-  repeat: -1, //重复次数，无限次循环 -1
-  yoyo: true, // 是否往返
-  delay: 2, //延迟
-  onComplete() {
-    console.log("动画完成的回调执行了！！");
-  },
-  onStart() {
-    console.log("动画开始");
-  },
-});
-
-window.addEventListener("dblclick", () => {
-  if (animate1.isActive()) {
-    animate1.pause();
-  } else {
-    animate1.resume();
-  }
-  console.log(animate1);
-});
+gsap.to(cube.position, { x: 5, y: 2, duration: 5 });
+gsap.to(cube.rotation, { x: Math.PI * 2, duration: 5 });
 
 const render = () => {
   // cube.rotation.z += Math.PI / 180; // 物体旋转
