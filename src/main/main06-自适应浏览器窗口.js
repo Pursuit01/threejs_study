@@ -1,5 +1,7 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { gsap } from "gsap";
+// console.log(THREE);
 
 // 目标： 控制3d物体移动
 
@@ -57,6 +59,30 @@ document.body.appendChild(renderer.domElement);
 const controls = new OrbitControls(camera, renderer.domElement);
 // 设置阻尼
 controls.enableDamping = true;
+const clock = new THREE.Clock();
+
+// 使用gsap动画库实现物体的移动
+gsap.to(cube.position, {
+  x: 5,
+  y: 2,
+  duration: 3,
+  repeat: -1,
+  yoyo: true,
+});
+gsap.to(cube.rotation, {
+  x: Math.PI * 2,
+  ease: "power1.inOut", // 动效
+  duration: 3, // 时长
+  repeat: -1, //重复次数，无限次循环 -1
+  yoyo: true, // 是否往返
+  delay: 2, //延迟
+  onComplete() {
+    console.log("动画完成的回调执行了！！");
+  },
+  onStart() {
+    console.log("动画开始");
+  },
+});
 
 const render = () => {
   // cube.rotation.z += Math.PI / 180; // 物体旋转
@@ -76,16 +102,4 @@ window.addEventListener("resize", () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
   // 设置渲染器的像素比
   renderer.setPixelRatio(window.devicePixelRatio);
-});
-
-window.addEventListener("dblclick", () => {
-  // 双击 进入/退出 全屏
-  const fullScreenElement = document.fullscreenElement;
-  if (fullScreenElement) {
-    // 退出全屏
-    document.exitFullscreen();
-  } else {
-    // 让画布对象全屏
-    renderer.domElement.requestFullscreen();
-  }
 });
