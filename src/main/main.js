@@ -1,7 +1,8 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-
-// 目标： 控制3d物体移动
+// 导入dat.gui
+import * as dat from "dat.gui";
+import { gsap } from "gsap";
 
 // 1. 创建一个场景
 const scene = new THREE.Scene();
@@ -78,14 +79,39 @@ window.addEventListener("resize", () => {
   renderer.setPixelRatio(window.devicePixelRatio);
 });
 
-window.addEventListener("dblclick", () => {
-  // 双击 进入/退出 全屏
-  const fullScreenElement = document.fullscreenElement;
-  if (fullScreenElement) {
-    // 退出全屏
-    document.exitFullscreen();
-  } else {
-    // 让画布对象全屏
-    renderer.domElement.requestFullscreen();
-  }
+const gui = new dat.GUI();
+gui
+  .add(cube.position, "x")
+  .min(0)
+  .max(5)
+  .step(0.1)
+  .name("移动x轴坐标")
+  .onChange((value) => {
+    console.log("value", value);
+  })
+  .onFinishChange((value) => {
+    console.log("完全停下后触发", value);
+  });
+
+// 修改物体颜色
+const params = {
+  color: "#ffff00",
+  fn() {
+    if (cube.position.x >= 5) {
+      gsap.to(cube.position, { x: 0, duration: 3 });
+    } else {
+      gsap.to(cube.position, { x: 5, duration: 3 });
+    }
+  },
+};
+gui.addColor(params, "color").onChange((value) => {
+  // 将选中的颜色赋给物体
+  cube.material.color.set(value);
 });
+gui.add(cube, "visible").name("是否显示");
+// 点击按钮触发事件
+gui.add(params, "fn").name("点击使物体运动");
+
+const folder = gui.addFolder("设置立方体");
+folder.add(cube.material, "wireframe");
+folder.add(params, "fn").name("点击使物体运动");
