@@ -1,8 +1,7 @@
 import * as THREE from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 // console.log(THREE);
 
-// 目标： 使用控制器查看3d物体
+// 目的：了解threeJS最基本的内容
 
 // 1. 创建一个场景
 const scene = new THREE.Scene();
@@ -23,7 +22,7 @@ scene.add(camera);
 
 // 5. 添加物体
 // 创建几何体对象
-const cubeGeometry = new THREE.BoxGeometry(2, 1, 1);
+const cubeGeometry = new THREE.BoxGeometry(1, 1, 1);
 const cubeMaterial = new THREE.MeshBasicMaterial({ color: "skyblue" });
 
 // 根据几何体和材质创建物体
@@ -41,17 +40,4 @@ console.log(renderer);
 document.body.appendChild(renderer.domElement);
 
 // 8. 使用渲染器通过相机将场景渲染进来
-// renderer.render(scene, camera);
-
-// 9. 创建轨道控制器
-// 传入控制器需要控制的相机和物体
-const controls = new OrbitControls(camera, renderer.domElement);
-
-const render = () => {
-  renderer.render(scene, camera);
-  requestAnimationFrame(render);
-};
-render();
-
-//
-// controls.update();
+renderer.render(scene, camera);
