@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { gsap } from "gsap";
 // console.log(THREE);
 
 // 目标： 控制3d物体移动
@@ -34,7 +35,9 @@ const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
 
 // 设置几何体的缩放比例
-cube.scale.set(3, 2, 1);
+// cube.scale.set(3, 2, 1);
+//  旋转
+// cube.rotation.set(Math.PI / 2, 0, 0);
 
 // 将物体添加到场景中
 scene.add(cube);
@@ -55,7 +58,14 @@ document.body.appendChild(renderer.domElement);
 // 传入控制器需要控制的相机和物体
 const controls = new OrbitControls(camera, renderer.domElement);
 
+const clock = new THREE.Clock();
+
+// 使用gsap动画库实现物体的移动
+gsap.to(cube.position, { x: 5, y: 2, duration: 5 });
+gsap.to(cube.rotation, { x: Math.PI * 2, duration: 5 });
+
 const render = () => {
+  // cube.rotation.z += Math.PI / 180; // 物体旋转
   renderer.render(scene, camera);
   requestAnimationFrame(render);
 };
